@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Airbnb WhatsApp - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { min-height:100vh; }
+        .sidebar { min-width:220px; max-width:260px; }
+        .content { padding: 20px; }
+        .nav-link.active { background:#e9ecef; border-radius:6px; }
+    </style>
+</head>
+<body>
+<div class="d-flex">
+    <nav class="sidebar bg-light p-3 border-end vh-100">
+        <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+            <span class="fs-4">Airbnb Admin</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item"><a th:href="@{/admin/dashboard}" class="nav-link" th:classappend="${#httpServletRequest.requestURI.startsWith('/admin/dashboard') ? ' active':''}">Dashboard</a></li>
+            <li><a th:href="@{/admin/hospedagens}" class="nav-link" th:classappend="${#httpServletRequest.requestURI.startsWith('/admin/hospedagens') ? ' active':''}">Hospedagens</a></li>
+        </ul>
+        <hr>
+        <div>
+            <small class="text-muted">&copy; 2026</small>
+        </div>
+    </nav>
+
+    <div class="flex-grow-1 content">
+        <div class="container-fluid">
+            <div th:insert="~{::body}"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

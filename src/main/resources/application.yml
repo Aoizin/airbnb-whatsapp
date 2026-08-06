@@ -1,0 +1,60 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: airbnb-whatsapp
+  datasource:
+    url: jdbc:postgresql://localhost:5432/airbnb
+    username: postgres
+    password: postgres
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    open-in-view: false
+  thymeleaf:
+    cache: true
+    encoding: UTF-8
+
+flyway:
+  enabled: true
+  locations: classpath:db/migration
+  out-of-order: false
+
+logging:
+  level:
+    root: INFO
+    com.acme.airbnbwhatsapp: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+
+evolution:
+  base-url: https://api.evolution.com.br/v1
+  api-key: "${EVOLUTION_API_KEY:changeme}"
+  endpoints:
+    send-text: /messages/text
+    send-image: /messages/image
+    send-document: /messages/document
+    send-location: /messages/location
+

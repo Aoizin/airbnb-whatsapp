@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layout :: head"></head>
+<body>
+<div th:fragment="body">
+    <h1 class="mb-4">Dashboard</h1>
+    <div class="row g-3 mb-4">
+        <div class="col-sm-4">
+            <div class="card text-bg-light mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total hospedagens</h5>
+                    <p class="card-text fs-4" th:text="${total}">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-bg-light mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Confirmadas</h5>
+                    <p class="card-text fs-4 text-success" th:text="${confirmed}">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-bg-light mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Pendente</h5>
+                    <p class="card-text fs-4 text-warning" th:text="${pending}">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Últimas hospedagens</h3>
+    <div th:replace="admin/hospedagens/list :: tableFragment (~{hospedagens=${hospedagens}})"></div>
+</div>
+</body>
+</html>
+

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,12 +20,14 @@ import java.util.stream.Collectors;
 public class AdminDashboardService {
     private final HospedagemRepository hospedagemRepository;
 
+    @Transactional(readOnly = true)
     public Page<HospedagemSummaryDTO> listHospedagens(String apartamento, String responsavel, HospedagemStatus status, LocalDate checkinStart, LocalDate checkinEnd, Integer minGuests, String search, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Hospedagem> pageModel = hospedagemRepository.findByFilters(apartamento, responsavel, status, checkinStart, checkinEnd, minGuests, search, pageable);
         return pageModel.map(this::toSummaryDto);
     }
 
+    @Transactional(readOnly = true)
     public HospedagemSummaryDTO getSummaryById(java.util.UUID id) {
         return hospedagemRepository.findById(id).map(this::toSummaryDto).orElse(null);
     }

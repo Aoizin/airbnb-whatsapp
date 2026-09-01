@@ -22,11 +22,13 @@ public class WebhookController {
     private final OutboundMessagingService messagingService;
 
     @PostMapping
-    public ResponseEntity<?> receive(@Valid @RequestBody WebhookRequest req) {
+    public ResponseEntity<?> receive(@RequestBody WebhookRequest req) {
         log.info("Received webhook from {} - text={}", req.getFrom(), req.getText());
-        String reply = conversationService.processInbound(req.getExternalId(), req.getFrom(), req.getText());
+        java.util.List<String> replies = conversationService.processInbound(req.getExternalId(), req.getFrom(), req.getText());
 
-        messagingService.sendReply(req.getFrom(), reply);
+        for (String reply : replies) {
+            messagingService.sendReply(req.getFrom(), reply);
+        }
 
         // Always return 200 to acknowledge the webhook
         return ResponseEntity.ok().build();

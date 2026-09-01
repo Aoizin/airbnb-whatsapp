@@ -16,8 +16,7 @@ import java.util.UUID;
         @Index(name = "idx_hospede_phone", columnList = "telefone"),
         @Index(name = "idx_hospede_email", columnList = "email")
 })
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -48,6 +47,7 @@ public class Hospede {
     private Instant criadoEm;
 
     @OneToMany(mappedBy = "hospede", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Hospedagem> hospedagens = new ArrayList<>();
 
 }

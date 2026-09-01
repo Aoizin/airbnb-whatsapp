@@ -12,11 +12,14 @@ public class InicioState implements StateHandler {
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
         SessaoWhatsapp sessao = context.getSessao();
-        // Send greeting and ask for apartment
-        String reply = "Olá! Vamos registrar sua hospedagem. Por favor informe o número do apartamento:";
+        // Send greeting and template
+        java.util.List<String> messages = java.util.List.of(
+            "Olá! Vamos registrar sua hospedagem. Copie e cole a mensagem abaixo preenchendo os dados:",
+            "Responsável: \nApartamento: \nNome hóspede:\nCheck-in: \nCheck-out:"
+        );
         return StateResult.builder()
-                .nextState(ConversationState.APARTAMENTO)
-                .replyMessage(reply)
+                .nextState(ConversationState.TEMPLATE_REGISTRO)
+                .replyMessages(messages)
                 .build();
     }
 }

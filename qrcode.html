@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WhatsApp QR Code</title>
+</head>
+<body>
+<h1>Escaneie o QR Code com WhatsApp</h1>
+<img id="qrcode" src="" alt="QR Code" style="width: 300px;">
+<button onclick="fetchQRCode()">Gerar QR Code</button>
+
+<script>
+    async function fetchQRCode() {
+        const response = await fetch('http://localhost:8081/instance/connect/airbnb-bot', {
+            headers: { 'apikey': 'airbnb-bot-123' }
+        });
+        const data = await response.json();
+
+        if (data.base64) {
+            document.getElementById('qrcode').src = data.base64;
+        } else if (data.qrcode?.base64) {
+            document.getElementById('qrcode').src = data.qrcode.base64;
+        }
+    }
+</script>
+</body>
+</html>

@@ -36,8 +36,8 @@ public class QtdHospedesState implements StateHandler {
         context.getHospedagemRepository().save(h);
 
         return StateResult.builder()
-                .nextState(ConversationState.NOME_HOSPEDE)
-                .replyMessage("Por favor informe o nome completo do hóspede principal:")
+                .nextState(ConversationState.NOMES_HOSPEDES)
+                .replyMessage("Por favor informe os nomes de todos os hóspedes (separados por vírgula):")
                 .build();
     }
 }

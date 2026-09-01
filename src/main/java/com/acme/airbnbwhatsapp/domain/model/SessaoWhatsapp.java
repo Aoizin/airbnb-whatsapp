@@ -14,8 +14,7 @@ import java.util.UUID;
         @Index(name = "idx_sessao_phone", columnList = "phone_number"),
         @Index(name = "idx_sessao_external", columnList = "external_id")
 })
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

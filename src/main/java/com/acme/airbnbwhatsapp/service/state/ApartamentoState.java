@@ -16,10 +16,10 @@ public class ApartamentoState implements StateHandler {
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
         String apt = (incoming == null) ? "" : incoming.trim();
-        if (apt.isEmpty()) {
+        if (apt.isEmpty() || !apt.matches("\\d+")) {
             return StateResult.builder()
                     .nextState(ConversationState.APARTAMENTO)
-                    .replyMessage("Número do apartamento inválido. Por favor informe o número do apartamento:")
+                    .replyMessage("Número do apartamento inválido. Por favor informe apenas números:")
                     .build();
         }
 

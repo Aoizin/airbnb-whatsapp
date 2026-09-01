@@ -29,7 +29,7 @@ public class EvolutionClient implements MessagingPort {
                     .uri(getEndpoint(messageType))
                     .bodyValue(payload)
                     .retrieve()
-                    .onStatus(HttpStatus::isError, r -> r.bodyToMono(String.class).map(s -> new RuntimeException(s)))
+                    .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), r -> r.bodyToMono(String.class).map(s -> new RuntimeException(s)))
                     .bodyToMono(Map.class)
                     .block();
             log.info("Evolution API success messageType={} to={} response={}", messageType, to, resp);
@@ -45,18 +45,18 @@ public class EvolutionClient implements MessagingPort {
 
     private String getEndpoint(String messageType) {
         return switch (messageType) {
-            case "text" -> props.getEndpoints().getSendText();
-            case "image" -> props.getEndpoints().getSendImage();
-            case "document" -> props.getEndpoints().getSendDocument();
-            case "location" -> props.getEndpoints().getSendLocation();
+            case "text" -> "/message/sendText/airbnb-bot";
+            case "image" -> "/message/sendImage/airbnb-bot";
+            case "document" -> "/message/sendDocument/airbnb-bot";
+            case "location" -> "/message/sendLocation/airbnb-bot";
             default -> throw new IllegalArgumentException("Unknown message type: " + messageType);
         };
     }
 
     public boolean sendText(String to, String body) {
         TextMessageRequest req = TextMessageRequest.builder()
-                .to(to)
-                .text(new TextMessageRequest.Content(body))
+                .number(to)
+                .text(body)
                 .build();
         return sendMessage("text", to, req);
     }

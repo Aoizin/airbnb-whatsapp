@@ -19,7 +19,7 @@ public class EvolutionConfiguration {
 
         return WebClient.builder()
                 .baseUrl(props.getBaseUrl())
-                .defaultHeader("Authorization", "Bearer " + props.getApiKey())
+                .defaultHeader("apikey", props.getApiKey())
                 .exchangeStrategies(strategies)
                 .build();
     }

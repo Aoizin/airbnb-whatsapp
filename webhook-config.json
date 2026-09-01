@@ -1,0 +1,8 @@
+{
+  "webhook": {
+    "enabled": true,
+    "url": "http://host.docker.internal:8080/api/webhook/evolution",
+    "webhook_by_events": false,
+    "events": ["MESSAGES_UPSERT"]
+  }
+}

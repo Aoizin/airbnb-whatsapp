@@ -17,8 +17,7 @@ import java.util.UUID;
         @Index(name = "idx_hospedagem_status", columnList = "status"),
         @Index(name = "idx_hospedagem_hospede", columnList = "hospede_id")
 })
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -31,15 +30,13 @@ public class Hospedagem {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hospede_id", nullable = false)
+    @JoinColumn(name = "hospede_id")
     private Hospede hospede;
 
-    @NotNull
-    @Column(name = "checkin_date", nullable = false)
+    @Column(name = "checkin_date")
     private LocalDate checkinDate;
 
-    @NotNull
-    @Column(name = "checkout_date", nullable = false)
+    @Column(name = "checkout_date")
     private LocalDate checkoutDate;
 
     @NotNull

@@ -17,7 +17,7 @@ public class ConversationService {
     private final MessageProcessor messageProcessor;
 
     @Transactional
-    public String processInbound(String externalId, String phoneNumber, String text) {
+    public java.util.List<String> processInbound(String externalId, String phoneNumber, String text) {
         SessaoWhatsapp sessao = sessaoWhatsappRepository.findByExternalId(externalId)
                 .orElseGet(() -> createSession(externalId, phoneNumber));
 
@@ -38,7 +38,11 @@ public class ConversationService {
             sessaoWhatsappRepository.save(sessao);
         }
 
-        return result.getReplyMessage();
+        // Return multiple messages if available, otherwise single message
+        if (result.getReplyMessages() != null && !result.getReplyMessages().isEmpty()) {
+            return result.getReplyMessages();
+        }
+        return java.util.List.of(result.getReplyMessage());
     }
 
     private SessaoWhatsapp createSession(String externalId, String phoneNumber) {

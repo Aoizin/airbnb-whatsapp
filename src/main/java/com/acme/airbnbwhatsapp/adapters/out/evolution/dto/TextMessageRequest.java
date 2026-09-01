@@ -10,15 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class TextMessageRequest {
-    private String to;
-    private Content text;
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class Content {
-        private String body;
-    }
+    private String number;
+    private String text;
 }
 

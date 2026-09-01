@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layout :: head"></head>
+<body>
+<div th:fragment="body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Detalhes da Hospedagem</h1>
+        <a class="btn btn-outline-secondary" th:href="@{/admin/hospedagens}">Voltar</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Apartamento: <span th:text="${h.apartamento}">501</span></h5>
+            <p><strong>Responsável:</strong> <span th:text="${h.responsavel}">João</span></p>
+            <p><strong>Check-in:</strong> <span th:text="${h.checkinDate}">2026-08-01</span></p>
+            <p><strong>Check-out:</strong> <span th:text="${h.checkoutDate}">2026-08-05</span></p>
+            <p><strong>Pessoas:</strong> <span th:text="${h.qtdHospedes}">2</span></p>
+            <p><strong>Status:</strong> <span th:text="${h.status}">PENDING</span></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

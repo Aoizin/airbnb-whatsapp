@@ -11,5 +11,6 @@ import lombok.*;
 public class StateResult {
     private ConversationState nextState;
     private String replyMessage;
+    private java.util.List<String> replyMessages;
 }
 

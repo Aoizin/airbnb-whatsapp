@@ -40,15 +40,15 @@ public class AdminController {
 
     @GetMapping("/hospedagens")
     public String listHospedagens(Model model,
-                                 @RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "10") int size,
-                                 @RequestParam(required = false) String apartamento,
-                                 @RequestParam(required = false) String responsavel,
-                                 @RequestParam(required = false) HospedagemStatus status,
-                                 @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkinStart,
-                                 @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkinEnd,
-                                 @RequestParam(required = false) Integer minGuests,
-                                 @RequestParam(required = false) String search) {
+                                 @RequestParam(name = "page", defaultValue = "0") int page,
+                                 @RequestParam(name = "size", defaultValue = "10") int size,
+                                 @RequestParam(name = "apartamento", required = false) String apartamento,
+                                 @RequestParam(name = "responsavel", required = false) String responsavel,
+                                 @RequestParam(name = "status", required = false) HospedagemStatus status,
+                                 @RequestParam(name = "checkinStart", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkinStart,
+                                 @RequestParam(name = "checkinEnd", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkinEnd,
+                                 @RequestParam(name = "minGuests", required = false) Integer minGuests,
+                                 @RequestParam(name = "search", required = false) String search) {
 
         Page<HospedagemSummaryDTO> result = adminDashboardService.listHospedagens(apartamento, responsavel, status, checkinStart, checkinEnd, minGuests, search, page, size);
         model.addAttribute("hospedagens", result);

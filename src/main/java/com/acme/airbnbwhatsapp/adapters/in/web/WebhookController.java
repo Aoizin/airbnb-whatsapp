@@ -23,6 +23,12 @@ public class WebhookController {
 
     @PostMapping
     public ResponseEntity<?> receive(@RequestBody WebhookRequest req) {
+        // Ignore group messages
+        if (req.isGroup()) {
+            log.info("Ignoring message from group: {}", req.getFrom());
+            return ResponseEntity.ok().build();
+        }
+
         log.info("Received webhook from {} - text={}", req.getFrom(), req.getText());
         java.util.List<String> replies = conversationService.processInbound(req.getExternalId(), req.getFrom(), req.getText());
 

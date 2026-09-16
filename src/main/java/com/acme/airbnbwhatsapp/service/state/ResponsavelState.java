@@ -28,7 +28,9 @@ public class ResponsavelState implements StateHandler {
         }
 
         Hospedagem h = hospOpt.get();
-        h.setResponsavel(text);
+        // Note: This old state handler expects a String, but Hospedagem now uses Responsavel object
+        // This state may need to be removed or updated to match the new flow
+        // For now, we'll skip setting responsavel here as it should be set via the new flow
         context.getHospedagemRepository().save(h);
 
         return StateResult.builder()

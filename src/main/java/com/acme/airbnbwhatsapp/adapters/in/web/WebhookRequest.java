@@ -67,5 +67,10 @@ public class WebhookRequest {
         // Use phone number as external ID since message ID changes per message
         return data != null && data.getKey() != null ? data.getKey().getRemoteJid() : null;
     }
+
+    public boolean isGroup() {
+        String remoteJid = getFrom();
+        return remoteJid != null && remoteJid.endsWith("@g.us");
+    }
 }
 

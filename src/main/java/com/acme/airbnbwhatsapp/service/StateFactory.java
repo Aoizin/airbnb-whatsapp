@@ -11,7 +11,17 @@ public class StateFactory {
     private final EnumMap<ConversationState, com.acme.airbnbwhatsapp.service.state.StateHandler> map = new EnumMap<>(ConversationState.class);
 
     public StateFactory(InicioState inicio,
+                        CadastroResponsavelState cadastroResponsavel,
+                        MenuPrincipalState menuPrincipal,
+                        PosReservasState posReservas,
+                        SelecaoApartamentoState selecaoApartamento,
                         TemplateRegistroState templateRegistro,
+                        TemplateHospedesState templateHospedes,
+                        PerguntaVeiculoState perguntaVeiculo,
+                        DetalhesVeiculoState detalhesVeiculo,
+                        RevisaoReservaState revisaoReserva,
+                        ConfirmacaoReservaState confirmacaoReserva,
+                        AlteracaoReservaState alteracaoReserva,
                         ApartamentoState apartamento,
                         DataEntradaState dataEntrada,
                         DataSaidaState dataSaida,
@@ -23,7 +33,17 @@ public class StateFactory {
                         ObservacaoState observacao,
                         FinalizadoState finalizado) {
         map.put(ConversationState.INICIO, inicio);
+        map.put(ConversationState.CADASTRO_RESPONSAVEL, cadastroResponsavel);
+        map.put(ConversationState.MENU_PRINCIPAL, menuPrincipal);
+        map.put(ConversationState.POS_RESERVAS, posReservas);
+        map.put(ConversationState.SELECAO_APARTAMENTO, selecaoApartamento);
         map.put(ConversationState.TEMPLATE_REGISTRO, templateRegistro);
+        map.put(ConversationState.TEMPLATE_HOSPEDES, templateHospedes);
+        map.put(ConversationState.PERGUNTA_VEICULO, perguntaVeiculo);
+        map.put(ConversationState.DETALHES_VEICULO, detalhesVeiculo);
+        map.put(ConversationState.REVISAO_RESERVA, revisaoReserva);
+        map.put(ConversationState.CONFIRMACAO_RESERVA, confirmacaoReserva);
+        map.put(ConversationState.ALTERACAO_RESERVA, alteracaoReserva);
         map.put(ConversationState.APARTAMENTO, apartamento);
         map.put(ConversationState.DATA_ENTRADA, dataEntrada);
         map.put(ConversationState.DATA_SAIDA, dataSaida);

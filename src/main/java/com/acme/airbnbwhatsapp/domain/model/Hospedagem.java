@@ -59,11 +59,12 @@ public class Hospedagem {
     @JoinColumn(name = "sessao_whatsapp_id", unique = true)
     private SessaoWhatsapp sessaoWhatsapp;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "responsavel_id", unique = true)
+    private Responsavel responsavel;
+
     @Column(name = "apartamento")
     private String apartamento;
-
-    @Column(name = "responsavel")
-    private String responsavel;
 
     @Column(name = "qtd_hospedes")
     private Integer qtdHospedes;

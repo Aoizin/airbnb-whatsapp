@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layout :: head"></head>
+<body>
+<div th:fragment="body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Responsáveis</h1>
+        <a class="btn btn-primary" th:href="@{/admin/responsavel}">Atualizar</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>Apartamentos</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${responsaveis}">
+                <td th:text="${r.nome}">Gabriel Nicolau</td>
+                <td th:text="${r.cpf}">41444750003</td>
+                <td th:text="${r.telefone}">21999999999</td>
+                <td th:text="${r.apartamentos}">203, 401</td>
+                <td>
+                    <span th:if="${r.cadastroAprovado}" class="badge bg-success">Aprovado</span>
+                    <span th:unless="${r.cadastroAprovado}" class="badge bg-warning">Pendente</span>
+                </td>
+                <td>
+                    <form th:if="${r.cadastroAprovado}" th:action="@{/admin/responsavel/{id}/revoke(id=${r.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-warning">Revogar</button>
+                    </form>
+                    <form th:unless="${r.cadastroAprovado}" th:action="@{/admin/responsavel/{id}/approve(id=${r.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-success">Aprovar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

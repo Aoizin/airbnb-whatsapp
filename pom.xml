@@ -90,6 +90,18 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>9.22.3</version>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5432/airbnbdb</url>
+                    <user>airbnb</user>
+                    <password>airbnb</password>
+                    <locations>classpath:db/migration</locations>
+                    <cleanDisabled>false</cleanDisabled>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

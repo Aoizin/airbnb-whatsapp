@@ -2,6 +2,7 @@ package com.acme.airbnbwhatsapp.service;
 
 import com.acme.airbnbwhatsapp.adapters.out.persistence.repository.HospedagemRepository;
 import com.acme.airbnbwhatsapp.adapters.out.persistence.repository.HospedeRepository;
+import com.acme.airbnbwhatsapp.adapters.out.persistence.repository.ResponsavelRepository;
 import com.acme.airbnbwhatsapp.adapters.out.persistence.repository.SessaoWhatsappRepository;
 import com.acme.airbnbwhatsapp.domain.model.Hospedagem;
 import com.acme.airbnbwhatsapp.domain.model.Hospede;
@@ -16,15 +17,18 @@ public class ConversationContext {
     private final HospedeRepository hospedeRepository;
     private final HospedagemRepository hospedagemRepository;
     private final SessaoWhatsappRepository sessaoWhatsappRepository;
+    private final ResponsavelRepository responsavelRepository;
 
     public ConversationContext(SessaoWhatsapp sessao,
                                HospedeRepository hospedeRepository,
                                HospedagemRepository hospedagemRepository,
-                               SessaoWhatsappRepository sessaoWhatsappRepository) {
+                               SessaoWhatsappRepository sessaoWhatsappRepository,
+                               ResponsavelRepository responsavelRepository) {
         this.sessao = sessao;
         this.hospedeRepository = hospedeRepository;
         this.hospedagemRepository = hospedagemRepository;
         this.sessaoWhatsappRepository = sessaoWhatsappRepository;
+        this.responsavelRepository = responsavelRepository;
     }
 
     public Optional<Hospedagem> getHospedagem() {
@@ -38,5 +42,6 @@ public class ConversationContext {
     public HospedeRepository getHospedeRepository() { return hospedeRepository; }
     public HospedagemRepository getHospedagemRepository() { return hospedagemRepository; }
     public SessaoWhatsappRepository getSessaoWhatsappRepository() { return sessaoWhatsappRepository; }
+    public ResponsavelRepository getResponsavelRepository() { return responsavelRepository; }
 }
 

@@ -28,7 +28,8 @@ public class ConversationService {
         ConversationContext context = new ConversationContext(sessao,
                 messageProcessor.getHospedeRepository(),
                 messageProcessor.getHospedagemRepository(),
-                sessaoWhatsappRepository);
+                sessaoWhatsappRepository,
+                messageProcessor.getResponsavelRepository());
 
         StateResult result = messageProcessor.process(context, text);
 

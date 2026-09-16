@@ -1,8 +1,10 @@
 package com.acme.airbnbwhatsapp.adapters.in.web;
 
 import com.acme.airbnbwhatsapp.application.dto.HospedagemSummaryDTO;
+import com.acme.airbnbwhatsapp.application.dto.ResponsavelDTO;
 import com.acme.airbnbwhatsapp.domain.model.enums.HospedagemStatus;
 import com.acme.airbnbwhatsapp.service.AdminDashboardService;
+import com.acme.airbnbwhatsapp.service.ResponsavelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,6 +23,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminDashboardService adminDashboardService;
+    private final ResponsavelService responsavelService;
 
     @GetMapping({"","/dashboard"})
     public String dashboard(Model model) {
@@ -69,6 +73,24 @@ public class AdminController {
         if (dto == null) return "redirect:/admin/hospedagens";
         model.addAttribute("h", dto);
         return "admin/hospedagens/detail";
+    }
+
+    @GetMapping("/responsavel")
+    public String listResponsaveis(Model model) {
+        model.addAttribute("responsaveis", responsavelService.listAll());
+        return "admin/responsavel/list";
+    }
+
+    @PostMapping("/responsavel/{id}/approve")
+    public String approveResponsavel(@PathVariable("id") java.util.UUID id) {
+        responsavelService.approve(id);
+        return "redirect:/admin/responsavel";
+    }
+
+    @PostMapping("/responsavel/{id}/revoke")
+    public String revokeResponsavel(@PathVariable("id") java.util.UUID id) {
+        responsavelService.revoke(id);
+        return "redirect:/admin/responsavel";
     }
 }
 

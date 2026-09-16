@@ -14,6 +14,7 @@ public interface HospedagemRepository extends JpaRepository<Hospedagem, UUID>, H
     List<Hospedagem> findByStatus(HospedagemStatus status);
     Optional<Hospedagem> findBySessaoWhatsappId(UUID sessaoId);
     long countByStatus(HospedagemStatus status);
+    List<Hospedagem> findByResponsavelId(UUID responsavelId);
 }
 
 

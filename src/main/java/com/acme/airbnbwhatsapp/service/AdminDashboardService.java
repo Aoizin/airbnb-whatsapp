@@ -39,7 +39,7 @@ public class AdminDashboardService {
         return HospedagemSummaryDTO.builder()
                 .id(h.getId())
                 .apartamento(h.getApartamento())
-                .responsavel(h.getResponsavel())
+                .responsavel(h.getResponsavel() != null ? h.getResponsavel().getNome() : null)
                 .checkinDate(h.getCheckinDate())
                 .checkoutDate(h.getCheckoutDate())
                 .qtdHospedes(h.getQtdHospedes())

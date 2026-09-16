@@ -2,7 +2,17 @@ package com.acme.airbnbwhatsapp.domain.model.enums;
 
 public enum ConversationState {
     INICIO,
+    CADASTRO_RESPONSAVEL,
+    MENU_PRINCIPAL,
+    POS_RESERVAS,
+    SELECAO_APARTAMENTO,
     TEMPLATE_REGISTRO,
+    TEMPLATE_HOSPEDES,
+    PERGUNTA_VEICULO,
+    DETALHES_VEICULO,
+    REVISAO_RESERVA,
+    CONFIRMACAO_RESERVA,
+    ALTERACAO_RESERVA,
     APARTAMENTO,
     DATA_ENTRADA,
     DATA_SAIDA,

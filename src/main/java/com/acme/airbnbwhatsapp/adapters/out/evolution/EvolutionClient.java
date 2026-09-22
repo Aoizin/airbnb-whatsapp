@@ -87,5 +87,90 @@ public class EvolutionClient implements MessagingPort {
         LocationMessageRequest req = LocationMessageRequest.builder().to(to).location(content).build();
         return sendMessage("location", to, req);
     }
+
+    public Map<String, Object> fetchQRCode() {
+        try {
+            var resp = evolutionWebClient.get()
+                    .uri("/instance/connect/airbnb-bot")
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+            log.info("Evolution API QR code fetched: {}", resp);
+            return resp;
+        } catch (WebClientResponseException wex) {
+            log.error("Evolution API error fetching QR code status={} body={}",
+                    wex.getStatusCode(), wex.getResponseBodyAsString());
+        } catch (Exception ex) {
+            log.error("Error fetching QR code: {}", ex.getMessage(), ex);
+        }
+        return Map.of();
+    }
+
+    public boolean createInstance() {
+        try {
+            var resp = evolutionWebClient.post()
+                    .uri("/instance/create")
+                    .bodyValue(Map.of(
+                        "instanceName", "airbnb-bot",
+                        "qrcode", true,
+                        "integration", "WHATSAPP-BAILEYS"
+                    ))
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+            log.info("Evolution API instance created: {}", resp);
+            return true;
+        } catch (WebClientResponseException wex) {
+            log.error("Evolution API error creating instance status={} body={}",
+                    wex.getStatusCode(), wex.getResponseBodyAsString());
+        } catch (Exception ex) {
+            log.error("Error creating instance: {}", ex.getMessage(), ex);
+        }
+        return false;
+    }
+
+    public Map<String, Object> getConnectionState() {
+        try {
+            var resp = evolutionWebClient.get()
+                    .uri("/instance/connectionState/airbnb-bot")
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+            log.info("Evolution API connection state: {}", resp);
+            return resp;
+        } catch (WebClientResponseException wex) {
+            log.error("Evolution API error checking connection state status={} body={}",
+                    wex.getStatusCode(), wex.getResponseBodyAsString());
+        } catch (Exception ex) {
+            log.error("Error checking connection state: {}", ex.getMessage(), ex);
+        }
+        return Map.of("state", "unknown");
+    }
+
+    public boolean configureWebhook(String webhookUrl) {
+        try {
+            var resp = evolutionWebClient.post()
+                    .uri("/webhook/set/airbnb-bot")
+                    .bodyValue(Map.of(
+                        "webhook", Map.of(
+                            "enabled", true,
+                            "url", webhookUrl,
+                            "webhook_by_events", false,
+                            "events", java.util.List.of("MESSAGES_UPSERT")
+                        )
+                    ))
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+            log.info("Evolution API webhook configured: {}", resp);
+            return true;
+        } catch (WebClientResponseException wex) {
+            log.error("Evolution API error configuring webhook status={} body={}",
+                    wex.getStatusCode(), wex.getResponseBodyAsString());
+        } catch (Exception ex) {
+            log.error("Error configuring webhook: {}", ex.getMessage(), ex);
+        }
+        return false;
+    }
 }
 

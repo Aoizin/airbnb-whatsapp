@@ -2,6 +2,7 @@ package com.acme.airbnbwhatsapp.service.state;
 
 import com.acme.airbnbwhatsapp.domain.model.Hospedagem;
 import com.acme.airbnbwhatsapp.domain.model.Hospede;
+import com.acme.airbnbwhatsapp.domain.model.Responsavel;
 import com.acme.airbnbwhatsapp.domain.model.SessaoWhatsapp;
 import com.acme.airbnbwhatsapp.domain.model.enums.HospedagemStatus;
 import com.acme.airbnbwhatsapp.domain.model.enums.ConversationState;
@@ -37,21 +38,27 @@ public class FinalizadoState implements StateHandler {
 
         return StateResult.builder()
                 .nextState(ConversationState.FINALIZADO)
-                .replyMessage("Reserva confirmada!\n" + summary)
+                .replyMessage("✅ Reserva confirmada com sucesso!\n\n" + summary)
                 .build();
     }
 
     private String buildSummary(Hospedagem h, Hospede hospede) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Apartamento: ").append(h.getApartamento()).append("\n");
-        sb.append("Check-in: ").append(h.getCheckinDate()).append("\n");
-        sb.append("Check-out: ").append(h.getCheckoutDate()).append("\n");
-        if (hospede != null) {
-            sb.append("Hóspede: ").append(hospede.getNome()).append("\n");
+        sb.append("📌 Apartamento: ").append(h.getApartamento()).append("\n");
+        sb.append("📅 Check-in: ").append(h.getCheckinDate()).append("\n");
+        sb.append("📅 Check-out: ").append(h.getCheckoutDate()).append("\n");
+        
+        if (h.getResponsavel() != null) {
+            Responsavel r = h.getResponsavel();
+            sb.append("👤 Responsável: ").append(r.getNome()).append(" (").append(r.getTelefone()).append(")\n");
         }
-        if (h.getQtdHospedes() != null) sb.append("Pessoas: ").append(h.getQtdHospedes()).append("\n");
-        if (h.getPlaca() != null) sb.append("Placa: ").append(h.getPlaca()).append("\n");
-        if (h.getObservacao() != null) sb.append("Obs: ").append(h.getObservacao()).append("\n");
+        
+        if (hospede != null) {
+            sb.append("👥 Hóspede: ").append(hospede.getNome()).append("\n");
+        }
+        if (h.getQtdHospedes() != null) sb.append("🔢 Pessoas: ").append(h.getQtdHospedes()).append("\n");
+        if (h.getPlaca() != null) sb.append("🚗 Placa: ").append(h.getPlaca()).append("\n");
+        if (h.getObservacao() != null) sb.append("📝 Obs: ").append(h.getObservacao()).append("\n");
         return sb.toString();
     }
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WhatsApp QR Code</title>
+    <style>
+        .status-connected { color: green; font-weight: bold; }
+        .status-disconnected { color: red; font-weight: bold; }
+        .status-connecting { color: orange; font-weight: bold; }
+    </style>
+</head>
+<body>
+<h1>Escaneie o QR Code com WhatsApp</h1>
+<p>Status: <span id="status">Verificando...</span></p>
+<img id="qrcode" src="" alt="QR Code" style="width: 300px;">
+<button onclick="fetchQRCode()">Gerar QR Code</button>
+<button onclick="checkStatus()">Verificar Status</button>
+
+<script>
+    async function fetchQRCode() {
+        const response = await fetch('/qrcode/fetch');
+        const data = await response.json();
+
+        if (data.base64) {
+            document.getElementById('qrcode').src = data.base64;
+        } else if (data.qrcode?.base64) {
+            document.getElementById('qrcode').src = data.qrcode.base64;
+        }
+        
+        checkStatus();
+    }
+
+    async function checkStatus() {
+        const response = await fetch('/qrcode/status');
+        const data = await response.json();
+        const statusEl = document.getElementById('status');
+        
+        const state = data.state || data.instance?.state || 'unknown';
+        
+        statusEl.className = '';
+        if (state === 'open') {
+            statusEl.textContent = 'Conectado';
+            statusEl.classList.add('status-connected');
+        } else if (state === 'close') {
+            statusEl.textContent = 'Desconectado';
+            statusEl.classList.add('status-disconnected');
+        } else if (state === 'connecting') {
+            statusEl.textContent = 'Conectando...';
+            statusEl.classList.add('status-connecting');
+        } else {
+            statusEl.textContent = state;
+        }
+    }
+
+    // Check status every 5 seconds
+    setInterval(checkStatus, 5000);
+    checkStatus();
+</script>
+</body>
+</html>

@@ -29,7 +29,7 @@ public class AdminDashboardService {
 
     @Transactional(readOnly = true)
     public HospedagemSummaryDTO getSummaryById(java.util.UUID id) {
-        return hospedagemRepository.findById(id).map(this::toSummaryDto).orElse(null);
+        return hospedagemRepository.findByIdWithResponsavel(id).map(this::toSummaryDto).orElse(null);
     }
 
     public long countTotal() { return hospedagemRepository.count(); }

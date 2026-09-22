@@ -1,10 +1,13 @@
 package com.acme.airbnbwhatsapp.service.state;
 
 import com.acme.airbnbwhatsapp.domain.model.Hospedagem;
+import com.acme.airbnbwhatsapp.domain.model.Responsavel;
 import com.acme.airbnbwhatsapp.domain.model.enums.ConversationState;
 import com.acme.airbnbwhatsapp.service.ConversationContext;
 import com.acme.airbnbwhatsapp.service.StateResult;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class ResponsavelState implements StateHandler {
@@ -28,9 +31,45 @@ public class ResponsavelState implements StateHandler {
         }
 
         Hospedagem h = hospOpt.get();
-        // Note: This old state handler expects a String, but Hospedagem now uses Responsavel object
-        // This state may need to be removed or updated to match the new flow
-        // For now, we'll skip setting responsavel here as it should be set via the new flow
+        
+        // Parse name and phone from input (format: "Nome - telefone" or "Nome telefone")
+        String[] parts = text.split("[-\\s]+");
+        if (parts.length < 2) {
+            return StateResult.builder()
+                    .nextState(ConversationState.RESPONSAVEL)
+                    .replyMessage("Formato inválido. Informe nome e telefone (ex: João - +5511xxxx):")
+                    .build();
+        }
+
+        // Extract phone (last part should be the phone number)
+        String phone = parts[parts.length - 1].trim();
+        String name = String.join(" ", java.util.Arrays.copyOf(parts, parts.length - 1)).trim();
+
+        // Try to find existing responsavel by phone
+        Optional<Responsavel> respOpt = context.getResponsavelRepository().findByTelefone(phone);
+        Responsavel responsavel;
+        
+        if (respOpt.isPresent()) {
+            responsavel = respOpt.get();
+            // Update name if different
+            if (!responsavel.getNome().equals(name)) {
+                responsavel.setNome(name);
+                context.getResponsavelRepository().save(responsavel);
+            }
+        } else {
+            // Create new responsavel with temporary CPF (will need to be completed later)
+            responsavel = Responsavel.builder()
+                    .nome(name)
+                    .telefone(phone)
+                    .cpf("PENDENTE") // Temporary CPF, needs to be completed
+                    .apartamentos(h.getApartamento())
+                    .cadastroAprovado(false)
+                    .build();
+            responsavel = context.getResponsavelRepository().save(responsavel);
+        }
+
+        // Associate responsavel with hospedagem
+        h.setResponsavel(responsavel);
         context.getHospedagemRepository().save(h);
 
         return StateResult.builder()

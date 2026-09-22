@@ -1,6 +1,7 @@
 package com.acme.airbnbwhatsapp.adapters.out.persistence.repository;
 
 import com.acme.airbnbwhatsapp.domain.model.Hospedagem;
+import com.acme.airbnbwhatsapp.domain.model.Responsavel;
 import com.acme.airbnbwhatsapp.domain.model.enums.HospedagemStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,13 +26,17 @@ public class HospedagemRepositoryImpl implements HospedagemRepositoryCustom {
         CriteriaQuery<Hospedagem> cq = cb.createQuery(Hospedagem.class);
         Root<Hospedagem> root = cq.from(Hospedagem.class);
 
+        // Fetch join to load responsavel
+        root.fetch("responsavel", JoinType.LEFT);
+
         List<Predicate> predicates = new ArrayList<>();
 
         if (apartamento != null && !apartamento.isBlank()) {
             predicates.add(cb.like(cb.lower(root.get("apartamento")), "%" + apartamento.toLowerCase() + "%"));
         }
         if (responsavel != null && !responsavel.isBlank()) {
-            predicates.add(cb.like(cb.lower(root.get("responsavel")), "%" + responsavel.toLowerCase() + "%"));
+            Join<Hospedagem, Responsavel> responsavelJoin = root.join("responsavel", JoinType.LEFT);
+            predicates.add(cb.like(cb.lower(responsavelJoin.get("nome")), "%" + responsavel.toLowerCase() + "%"));
         }
         if (status != null) {
             predicates.add(cb.equal(root.get("status"), status));
@@ -48,7 +53,8 @@ public class HospedagemRepositoryImpl implements HospedagemRepositoryCustom {
         if (search != null && !search.isBlank()) {
             String s = "%" + search.toLowerCase() + "%";
             Predicate p1 = cb.like(cb.lower(root.get("apartamento")), s);
-            Predicate p2 = cb.like(cb.lower(root.get("responsavel")), s);
+            Join<Hospedagem, Responsavel> responsavelJoin = root.join("responsavel", JoinType.LEFT);
+            Predicate p2 = cb.like(cb.lower(responsavelJoin.get("nome")), s);
             predicates.add(cb.or(p1, p2));
         }
 

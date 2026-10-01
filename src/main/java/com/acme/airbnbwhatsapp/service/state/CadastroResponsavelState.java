@@ -17,6 +17,12 @@ public class CadastroResponsavelState implements StateHandler {
 
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
+        if (incoming == null) {
+            return StateResult.builder()
+                    .nextState(ConversationState.CADASTRO_RESPONSAVEL)
+                    .replyMessage("Mensagem vazia. Por favor envie as informações do responsável.")
+                    .build();
+        }
         String input = incoming.trim();
         
         String nome = null;

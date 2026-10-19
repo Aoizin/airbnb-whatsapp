@@ -20,7 +20,15 @@ public class SelecaoApartamentoState implements StateHandler {
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
         String input = incoming.trim();
-        
+
+        // Check for reset command
+        if (input.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         String phoneNumber = context.getSessao().getPhoneNumber();
         Optional<com.acme.airbnbwhatsapp.domain.model.Responsavel> responsavelOpt = 
             context.getResponsavelRepository().findByTelefone(phoneNumber);
@@ -40,7 +48,7 @@ public class SelecaoApartamentoState implements StateHandler {
             if (selection < 1 || selection > apartamentos.length) {
                 return StateResult.builder()
                         .nextState(ConversationState.SELECAO_APARTAMENTO)
-                        .replyMessage("Opção inválida. Por favor selecione um número válido:")
+                        .replyMessage("Opção inválida. Por favor selecione um número válido:\n\nPara reiniciar a conversação, envie: /reset")
                         .build();
             }
 
@@ -70,7 +78,7 @@ public class SelecaoApartamentoState implements StateHandler {
         } catch (NumberFormatException e) {
             return StateResult.builder()
                     .nextState(ConversationState.SELECAO_APARTAMENTO)
-                    .replyMessage("Por favor digite um número válido:")
+                    .replyMessage("Por favor digite um número válido:\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
     }

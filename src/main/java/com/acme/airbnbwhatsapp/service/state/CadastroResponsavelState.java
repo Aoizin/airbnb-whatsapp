@@ -24,6 +24,14 @@ public class CadastroResponsavelState implements StateHandler {
                     .build();
         }
         String input = incoming.trim();
+
+        // Check for reset command
+        if (input.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
         
         String nome = null;
         String cpf = null;
@@ -60,7 +68,8 @@ public class CadastroResponsavelState implements StateHandler {
                     .nextState(ConversationState.CADASTRO_RESPONSAVEL)
                     .replyMessage("Formato inválido. Por favor envie as informações em um dos formatos:\n\n" +
                         "Formato 1:\nNome Completo: Gabriel Nicolau\nCPF: 41444750003\nApartamento(s): 203, 401\n\n" +
-                        "Formato 2:\nGabriel Nicolau\n41444750003\n203, 401")
+                        "Formato 2:\nGabriel Nicolau\n41444750003\n203, 401\n\n" +
+                        "Para reiniciar a conversação, envie: /reset")
                     .build();
         }
 
@@ -68,7 +77,7 @@ public class CadastroResponsavelState implements StateHandler {
         if (context.getResponsavelRepository().findByCpf(cpf).isPresent()) {
             return StateResult.builder()
                     .nextState(ConversationState.CADASTRO_RESPONSAVEL)
-                    .replyMessage("Este CPF já está cadastrado. Por favor verifique ou contate o suporte.")
+                    .replyMessage("Este CPF já está cadastrado. Por favor verifique ou contate o suporte.\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 

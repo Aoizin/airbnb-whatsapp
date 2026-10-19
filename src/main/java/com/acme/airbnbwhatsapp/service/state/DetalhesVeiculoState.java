@@ -17,10 +17,17 @@ public class DetalhesVeiculoState implements StateHandler {
 
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
+        if (incoming != null && incoming.trim().equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         if (incoming == null || incoming.trim().isEmpty()) {
             return StateResult.builder()
                     .nextState(ConversationState.DETALHES_VEICULO)
-                    .replyMessage("Por favor, preencha os dados do veículo:")
+                    .replyMessage("Por favor, preencha os dados do veículo:\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 
@@ -45,7 +52,7 @@ public class DetalhesVeiculoState implements StateHandler {
         if (vehicleData == null) {
             return StateResult.builder()
                     .nextState(ConversationState.DETALHES_VEICULO)
-                    .replyMessage("Formato inválido. Por favor preencha os dados do veículo:")
+                    .replyMessage("Formato inválido. Por favor preencha os dados do veículo:\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 

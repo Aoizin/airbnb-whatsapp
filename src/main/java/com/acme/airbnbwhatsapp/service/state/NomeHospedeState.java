@@ -16,10 +16,19 @@ public class NomeHospedeState implements StateHandler {
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
         String text = (incoming == null) ? "" : incoming.trim();
+
+        // Check for reset command
+        if (text.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         if (text.isEmpty()) {
             return StateResult.builder()
                     .nextState(ConversationState.NOME_HOSPEDE)
-                    .replyMessage("Nome inválido. Informe o nome completo do hóspede:")
+                    .replyMessage("Nome inválido. Informe o nome completo do hóspede:\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 

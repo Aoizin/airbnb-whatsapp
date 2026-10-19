@@ -19,6 +19,15 @@ public class DataEntradaState implements StateHandler {
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
         String text = (incoming == null) ? "" : incoming.trim();
+
+        // Check for reset command
+        if (text.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         LocalDate date;
         try {
             date = LocalDate.parse(text, fmt1);
@@ -28,7 +37,7 @@ public class DataEntradaState implements StateHandler {
             } catch (Exception ex2) {
                 return StateResult.builder()
                         .nextState(ConversationState.DATA_ENTRADA)
-                        .replyMessage("Formato de data inválido. Envie no formato DD/MM/AAAA:")
+                        .replyMessage("Formato de data inválido. Envie no formato DD/MM/AAAA:\n\nPara reiniciar a conversação, envie: /reset")
                         .build();
             }
         }

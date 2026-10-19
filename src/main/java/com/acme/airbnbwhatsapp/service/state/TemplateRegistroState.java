@@ -18,11 +18,19 @@ public class TemplateRegistroState implements StateHandler {
 
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
+        // Check for reset command
+        if (incoming != null && incoming.trim().equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         // First entry - ask for guest count
         if (incoming == null || incoming.trim().isEmpty()) {
             return StateResult.builder()
                     .nextState(ConversationState.TEMPLATE_REGISTRO)
-                    .replyMessage("Número de Hóspedes?")
+                    .replyMessage("Número de Hóspedes?\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 
@@ -32,7 +40,7 @@ public class TemplateRegistroState implements StateHandler {
         if (!input.matches("\\d+")) {
             return StateResult.builder()
                     .nextState(ConversationState.TEMPLATE_REGISTRO)
-                    .replyMessage("Número de Hóspedes?")
+                    .replyMessage("Número de Hóspedes?\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 

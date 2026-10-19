@@ -16,6 +16,14 @@ public class PosReservasState implements StateHandler {
     public StateResult handle(ConversationContext context, String incoming) {
         String input = incoming.trim();
 
+        // Check for reset command
+        if (input.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         if (input.equals("1")) {
             String phoneNumber = context.getSessao().getPhoneNumber();
             Optional<com.acme.airbnbwhatsapp.domain.model.Responsavel> responsavelOpt = 
@@ -56,7 +64,7 @@ public class PosReservasState implements StateHandler {
         } else {
             return StateResult.builder()
                     .nextState(ConversationState.POS_RESERVAS)
-                    .replyMessage("Opção inválida. Por favor digite:\n1 - Deseja fazer uma nova reserva?\n2 - Encerrar")
+                    .replyMessage("Opção inválida. Por favor digite:\n1 - Deseja fazer uma nova reserva?\n2 - Encerrar\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
     }

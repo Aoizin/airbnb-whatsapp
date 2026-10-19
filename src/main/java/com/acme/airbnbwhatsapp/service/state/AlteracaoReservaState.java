@@ -12,6 +12,14 @@ public class AlteracaoReservaState implements StateHandler {
     public StateResult handle(ConversationContext context, String incoming) {
         String input = incoming.trim();
 
+        // Check for reset command
+        if (input.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         switch (input) {
             case "1":
                 // Alterar Apartamento
@@ -40,7 +48,7 @@ public class AlteracaoReservaState implements StateHandler {
             default:
                 return StateResult.builder()
                         .nextState(ConversationState.ALTERACAO_RESERVA)
-                        .replyMessage("Opção inválida. Por favor selecione:\n1 - Apartamento\n2 - Datas\n3 - Hóspedes\n4 - Veículo")
+                        .replyMessage("Opção inválida. Por favor selecione:\n1 - Apartamento\n2 - Datas\n3 - Hóspedes\n4 - Veículo\n\nPara reiniciar a conversação, envie: /reset")
                         .build();
         }
     }

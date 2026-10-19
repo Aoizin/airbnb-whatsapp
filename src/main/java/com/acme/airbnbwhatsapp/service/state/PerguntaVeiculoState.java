@@ -12,6 +12,14 @@ public class PerguntaVeiculoState implements StateHandler {
     public StateResult handle(ConversationContext context, String incoming) {
         String input = incoming.trim();
 
+        // Check for reset command
+        if (input.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         if (input.equals("1")) {
             return StateResult.builder()
                     .nextState(ConversationState.DETALHES_VEICULO)
@@ -25,7 +33,7 @@ public class PerguntaVeiculoState implements StateHandler {
         } else {
             return StateResult.builder()
                     .nextState(ConversationState.PERGUNTA_VEICULO)
-                    .replyMessage("Opção inválida. Por favor digite:\n1 - Sim\n2 - Não")
+                    .replyMessage("Opção inválida. Por favor digite:\n1 - Sim\n2 - Não\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
     }

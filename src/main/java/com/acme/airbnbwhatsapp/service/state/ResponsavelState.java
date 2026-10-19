@@ -15,10 +15,19 @@ public class ResponsavelState implements StateHandler {
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
         String text = (incoming == null) ? "" : incoming.trim();
+
+        // Check for reset command
+        if (text.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         if (text.isEmpty()) {
             return StateResult.builder()
                     .nextState(ConversationState.RESPONSAVEL)
-                    .replyMessage("Nome do responsável inválido. Informe o nome e telefone do responsável:")
+                    .replyMessage("Nome do responsável inválido. Informe o nome e telefone do responsável:\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 
@@ -37,7 +46,7 @@ public class ResponsavelState implements StateHandler {
         if (parts.length < 2) {
             return StateResult.builder()
                     .nextState(ConversationState.RESPONSAVEL)
-                    .replyMessage("Formato inválido. Informe nome e telefone (ex: João - +5511xxxx):")
+                    .replyMessage("Formato inválido. Informe nome e telefone (ex: João - +5511xxxx):\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 

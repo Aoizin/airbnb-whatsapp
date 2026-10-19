@@ -17,6 +17,15 @@ public class DataSaidaState implements StateHandler {
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
         String text = (incoming == null) ? "" : incoming.trim();
+
+        // Check for reset command
+        if (text.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         LocalDate date;
         try {
             date = LocalDate.parse(text, fmt1);
@@ -26,7 +35,7 @@ public class DataSaidaState implements StateHandler {
             } catch (Exception ex2) {
                 return StateResult.builder()
                         .nextState(ConversationState.DATA_SAIDA)
-                        .replyMessage("Formato de data inválido. Envie no formato DD/MM/AAAA:")
+                        .replyMessage("Formato de data inválido. Envie no formato DD/MM/AAAA:\n\nPara reiniciar a conversação, envie: /reset")
                         .build();
             }
         }
@@ -43,7 +52,7 @@ public class DataSaidaState implements StateHandler {
         if (h.getCheckinDate() != null && !date.isAfter(h.getCheckinDate())) {
             return StateResult.builder()
                     .nextState(ConversationState.DATA_SAIDA)
-                    .replyMessage("A data de saída deve ser posterior à data de entrada. Envie uma data válida:")
+                    .replyMessage("A data de saída deve ser posterior à data de entrada. Envie uma data válida:\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 

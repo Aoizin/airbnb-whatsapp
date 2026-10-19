@@ -18,6 +18,14 @@ public class InicioState implements StateHandler {
         SessaoWhatsapp sessao = context.getSessao();
         String phoneNumber = sessao.getPhoneNumber();
 
+        // Check for reset command
+        if (incoming != null && incoming.trim().equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         Optional<com.acme.airbnbwhatsapp.domain.model.Responsavel> responsavelOpt = 
             context.getResponsavelRepository().findByTelefone(phoneNumber);
 

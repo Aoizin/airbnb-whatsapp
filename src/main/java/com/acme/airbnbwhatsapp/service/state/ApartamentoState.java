@@ -16,10 +16,19 @@ public class ApartamentoState implements StateHandler {
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
         String apt = (incoming == null) ? "" : incoming.trim();
+
+        // Check for reset command
+        if (apt.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         if (apt.isEmpty() || !apt.matches("\\d+")) {
             return StateResult.builder()
                     .nextState(ConversationState.APARTAMENTO)
-                    .replyMessage("Número do apartamento inválido. Por favor informe apenas números:")
+                    .replyMessage("Número do apartamento inválido. Por favor informe apenas números:\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 

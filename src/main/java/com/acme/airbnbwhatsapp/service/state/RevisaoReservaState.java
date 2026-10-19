@@ -18,6 +18,14 @@ public class RevisaoReservaState implements StateHandler {
 
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
+        // Check for reset command
+        if (incoming != null && incoming.trim().equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         var hospedagemOpt = context.getHospedagem();
         if (hospedagemOpt.isEmpty()) {
             return StateResult.builder()

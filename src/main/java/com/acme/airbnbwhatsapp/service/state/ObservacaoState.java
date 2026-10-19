@@ -18,6 +18,15 @@ public class ObservacaoState implements StateHandler {
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
         String text = (incoming == null) ? "" : incoming.trim();
+
+        // Check for reset command
+        if (text.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         var hospOpt = context.getHospedagem();
         if (hospOpt.isEmpty()) {
             return StateResult.builder()

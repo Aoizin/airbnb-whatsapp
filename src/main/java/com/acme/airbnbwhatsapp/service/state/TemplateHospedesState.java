@@ -25,10 +25,18 @@ public class TemplateHospedesState implements StateHandler {
 
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
+        // Check for reset command
+        if (incoming != null && incoming.trim().equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         if (incoming == null || incoming.trim().isEmpty()) {
             return StateResult.builder()
                     .nextState(ConversationState.TEMPLATE_HOSPEDES)
-                    .replyMessage("Por favor, preencha o template e envie novamente.")
+                    .replyMessage("Por favor, preencha o template e envie novamente.\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 
@@ -54,7 +62,7 @@ public class TemplateHospedesState implements StateHandler {
         if (parsedData == null) {
             return StateResult.builder()
                     .nextState(ConversationState.TEMPLATE_HOSPEDES)
-                    .replyMessage("Formato inválido. Por favor preencha o template corretamente.")
+                    .replyMessage("Formato inválido. Por favor preencha o template corretamente.\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
 

@@ -18,6 +18,14 @@ public class FinalizadoState implements StateHandler {
 
     @Override
     public StateResult handle(ConversationContext context, String incoming) {
+        // Check for reset command
+        if (incoming != null && incoming.trim().equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         SessaoWhatsapp sessao = context.getSessao();
         Optional<Hospedagem> hospOpt = context.getHospedagem();
 

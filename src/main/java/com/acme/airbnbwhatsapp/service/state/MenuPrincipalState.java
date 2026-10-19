@@ -18,6 +18,14 @@ public class MenuPrincipalState implements StateHandler {
     public StateResult handle(ConversationContext context, String incoming) {
         String input = incoming.trim();
 
+        // Check for reset command
+        if (input.equalsIgnoreCase("/reset")) {
+            return StateResult.builder()
+                    .nextState(ConversationState.INICIO)
+                    .replyMessage("Conversação reiniciada. Vamos começar novamente.")
+                    .build();
+        }
+
         if (input.equals("1")) {
             return StateResult.builder()
                     .nextState(ConversationState.TEMPLATE_REGISTRO)
@@ -61,7 +69,7 @@ public class MenuPrincipalState implements StateHandler {
         } else {
             return StateResult.builder()
                     .nextState(ConversationState.MENU_PRINCIPAL)
-                    .replyMessage("Opção inválida. Por favor digite:\n1 - Fazer uma nova reserva\n2- Verificar reservas")
+                    .replyMessage("Opção inválida. Por favor digite:\n1 - Fazer uma nova reserva\n2- Verificar reservas\n\nPara reiniciar a conversação, envie: /reset")
                     .build();
         }
     }
